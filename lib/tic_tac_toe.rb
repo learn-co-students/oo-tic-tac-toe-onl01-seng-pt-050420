@@ -44,7 +44,7 @@ class TicTacToe
   
   def turn
     position = nil
-    until (1..9).include? position
+    until (1..9).include?(position)
       puts "Enter a number 1-9"
       position = gets.chomp.to_i
     end
