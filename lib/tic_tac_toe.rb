@@ -134,14 +134,15 @@ class TicTacToe
    end
 
   def play
-    over = nil
-    while over != true
+    until over?
       turn
-      over = over?
     end
-    draw_game = draw?
-    won_the_round = won?
-    binding.pry
+    if won?
+      winner_of_game = winner
+      puts "Congratulations #{winner_of_game}!"
+    elsif draw?
+      puts "Cat's Game!"
+    end
   end
 
 end
