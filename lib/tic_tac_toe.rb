@@ -131,6 +131,17 @@ class TicTacToe
          winning_token = winner_is_combo[0]
          @board[winning_token]
        end
-     end
+   end
+
+  def play
+    over = nil
+    while over != true
+      turn
+      over = over?
+    end
+    draw_game = draw?
+    won_the_round = won?
+    binding.pry
+  end
 
 end
