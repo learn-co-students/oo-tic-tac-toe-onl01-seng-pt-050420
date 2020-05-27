@@ -108,13 +108,14 @@ class TicTacToe
   end
 
   def play
-    # until the game is over
-    if !(over?)
-      turn
-      if !(draw?)
-        play
-      end
-    end
+    # # until the game is over
+    # if !(over?)
+    #   turn
+    #   if !(draw?)
+    #     play
+    #   end
+    # end
+    turn until over? || draw?
     
     # if the game was won
     if won?
