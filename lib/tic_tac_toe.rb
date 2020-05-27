@@ -102,23 +102,29 @@ class TicTacToe
   end
 
   def winner
-   if won?
-    @board[won?[0]]
-   end
+    winning_player = nil
+    if combo = won?
+      winning_player = @board[combo[0]]
+    else
+      winning_player =nil
+    end
+    winning_player
   end
 
   def play
-    # # until the game is over
-    # if !(over?)
+    # until the game is over
+    # if !(over? || draw?)
     #   turn
     #   if !(draw?)
-    #     play
+    #     turn
     #   end
     # end
     turn until over? || draw?
     
     # if the game was won
     if won?
+      index = won?
+      winner = @board[index[0]]
       puts "Congratulations #{winner}!"
     elsif
       puts "Cat's Game!"
