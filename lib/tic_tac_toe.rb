@@ -37,15 +37,15 @@ class TicTacToe
   end
 
   def valid_move?(index)
-    index < 0 || index > 8 || position_taken?(index) ? false : true
+    index.between?(0,8) && !(position_taken?(index))
   end
 
   def turn
     puts "Please enter 1-9:"
-    user_input = gets.chomp
+    user_input = gets.strip
     index = input_to_index(user_input)
     
-    if valid_move?(index)
+    if valid_move?(index) 
       move(index, current_player)
       display_board
     else
@@ -61,28 +61,34 @@ class TicTacToe
     turn_count % 2 == 0 ? "X" : "O"
   end
  
-  def won?
-    winning_combo = nil
+  # def won?
+  #   #binding.pry
 
-    if (@board[0] == @board[1] && @board[1] == @board[2])
-      winning_combo = WIN_COMBINATIONS[0]
-    elsif (@board[3] == @board[4] && @board[4] == @board[5])
-      winning_combo = WIN_COMBINATIONS[1]
-    elsif (@board[6] == @board[7] && @board[7] == @board[8])
-      winning_combo = WIN_COMBINATIONS[2]
-    elsif (@board[0] == @board[3] && @board[3] == @board[6])
-      winning_combo = WIN_COMBINATIONS[3]
-    elsif (@board[1] == @board[4] && @board[4] == @board[7])
-      winning_combo = WIN_COMBINATIONS[4]
-    elsif (@board[2] == @board[5] && @board[5] == @board[8])
-      winning_combo = WIN_COMBINATIONS[5]
-    elsif (@board[0] == @board[4] && @board[4] == @board[8])
-      winning_combo = WIN_COMBINATIONS[6]
-    elsif (@board[2] == @board[1] && @board[4] == @board[6])
-      winning_combo = WIN_COMBINATIONS[7]
-    end
+  #   if (@board[0] == @board[1] && @board[1] == @board[2] && position_taken?(0))
+  #     return WIN_COMBINATIONS[0]
+  #   elsif (@board[3] == @board[4] && @board[4] == @board[5] && position_taken?(3))
+  #     return WIN_COMBINATIONS[1]
+  #   elsif (@board[6] == @board[7] && @board[7] == @board[8] && position_taken?(6))
+  #     return WIN_COMBINATIONS[2]
+  #   elsif (@board[0] == @board[3] && @board[3] == @board[6] && position_taken?(0))
+  #     return WIN_COMBINATIONS[3]
+  #   elsif (@board[1] == @board[4] && @board[4] == @board[7] && position_taken?(1))
+  #     return WIN_COMBINATIONS[4]
+  #   elsif (@board[2] == @board[5] && @board[5] == @board[8] && position_taken?(2))
+  #     return WIN_COMBINATIONS[5]
+  #   elsif (@board[0] == @board[4] && @board[4] == @board[8] && position_taken?(0))
+  #     return WIN_COMBINATIONS[6]
+  #   elsif (@board[2] == @board[2] && @board[4] == @board[6] && position_taken?(2))
+  #     return WIN_COMBINATIONS[7]
+  #   end
+  # end
 
-    winning_combo
+  def won? 
+    WIN_COMBINATIONS.any? do |combo| 
+      if position_taken?(combo[0]) && @board[combo[0]] == @board[combo[1]] && @board[combo[1]] == @board[combo[2]] 
+        return combo 
+      end 
+    end 
   end
 
   def full?
@@ -90,11 +96,7 @@ class TicTacToe
   end
 
   def draw?
-    if (full? && !(won?))
-      true
-    else 
-      false
-    end
+    full? && !(won?)
   end
   
   def over?
@@ -102,13 +104,9 @@ class TicTacToe
   end
 
   def winner
-    winning_player = nil
-    if combo = won?
-      winning_player = @board[combo[0]]
-    else
-      winning_player =nil
+    if won?
+      @board[won?[0]]
     end
-    winning_player
   end
 
   def play
@@ -119,12 +117,13 @@ class TicTacToe
     #     turn
     #   end
     # end
-    turn until over? || draw?
+    
+    turn until over?
     
     # if the game was won
-    if won?
-      index = won?
-      winner = @board[index[0]]
+    if winner
+      #index = won?
+      #winner = @board[index[0]]
       puts "Congratulations #{winner}!"
     elsif
       puts "Cat's Game!"
