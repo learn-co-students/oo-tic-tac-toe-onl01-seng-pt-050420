@@ -1,3 +1,4 @@
+require 'pry'
 class TicTacToe
     WIN_COMBINATIONS = [
         [0,1,2],
@@ -34,6 +35,8 @@ class TicTacToe
         !(@board[index] == " ")
      end
      def valid_move?(index)
+        #index.between(0,8) && @board[index] == " "
+     
         if (0..8).include?(index)
             if @board[index] == " "
               return true
@@ -58,30 +61,92 @@ class TicTacToe
         end
 
         def turn 
-
           puts " Please enter a move : 1-9"
           input = gets.chomp
-          players_input = input_to_index(input)
-        #   token = current_player
-            if valid_move?(input) == true
+          index = input_to_index(input)
+        
+            if valid_move?(index) == true
                 token = current_player
-                move(players_input, token)
+                move(index, token)
                 display_board
             else
                 turn
-            # puts "Try again" 
-            # valid_move?(input)
-            # move(players_input, token)
-            # display_board
-
-         end
-         
-            
+             end
+                  
         end
+        def won?
+            WIN_COMBINATIONS.map do |combos|
+                count = 0
+                initial_index = combos[0]
+                combos.each do |combo|
+                if @board[combo] == @board[initial_index]
+                count += 1 unless @board[initial_index] == " "
+                end
+            end
+            return combos if count == 3
+          end
+      false
+    end
+    def full?
+        @board.all? do |spaces| 
+            if spaces == " " || won? != false
+                false
+           else
+                true
+            end
+        end
+    end
 
+    def draw?
+
+        @board.all? do |spaces| 
+            if spaces == " " || won? != false
+                false
+           else
+                true
+            end
 
         end
+    end
+    def over?
+        
+        if won? != false || draw? == true
+            return true
+        else
+            return false
+        end
+        
+    end
+    def winner
+        
+        if won? == false
+          return nil
+        else
+          winning_token = won?[0]
+          
+          @board[winning_token]
+          
+        end
+    
+    end
+    def play 
+        until over?
+            turn
+          end
+          if won?
+            winner_of_game = winner
+            puts "Congratulations #{winner_of_game}!"
+          elsif draw?
+            puts "Cat's Game!"
+          end
+   
+    end
+   
+end
 
+
+# new_game = TicTacToe.new
+# new_game.play
 
     
         
