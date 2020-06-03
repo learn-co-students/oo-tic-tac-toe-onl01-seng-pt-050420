@@ -1,7 +1,7 @@
 class TicTacToe
     attr_reader :board
     
-    WIN_COMBIONATIONS = [
+    WIN_COMBINATIONS = [
       [0,1,2],
       [3,4,5],
       [6,7,8],
@@ -85,7 +85,7 @@ class TicTacToe
     
     def won? 
       #fix the win condition constant
-      WIN_COMBIONATIONS.any? do |combo|
+      WIN_COMBINATIONS.any? do |combo|
         if position_taken?(combo[0]) &&
             @board[combo[0]] == @board[combo[1]] && 
             @board[combo[1]] == @board[combo[2]]
